@@ -1,122 +1,58 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import fetchCards from "./components/API";
+import Card from "./components/Card";
+import "./styles/cardStyles.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [cardList, setCardList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFirstLoading, setIFL] = useState(true);
+  const [score, setScore] = useState(0);
+
+  function handleCardClick(id) {
+    if (isLoading) return;
+    console.log(id);
+    // Checks if the card is already in selectedCards
+    const cObj = cardList.find((item) => item.id === id);
+    if (selectedCards.includes(cObj)) {
+      console.log("It was already selected");
+      return;
+    }
+    setScore(score + 1);
+    setSelectedCards((prev) => [...prev, cObj]);
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="mainContainer">
+      <h1>The Memory Card Game</h1>
+      <p>
+        Get points by clicking on an image but don't click on any more than
+        once!
+      </p>
+      <div>
+        <p>Current Score: {selectedCards.length}</p>
+        <p>High Score: 99</p>
+        {isLoading ? (
+          <div>
+            <p>Loading...</p>
+          </div>
+        ) : (
+          <div className="cardContainer">
+            {cardList.map((card) => (
+              <Card
+                key={card.id}
+                id={card.id}
+                text={card.text}
+                img={card.image}
+                click={handleCardClick}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
