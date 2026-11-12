@@ -1,27 +1,41 @@
 import { useEffect, useState } from "react";
 import fetchCards from "./components/API";
-import Card from "./components/Card";
+import Game from "./components/Game";
 import "./styles/cardStyles.css";
 
-function App() {
-  const [selectedCards, setSelectedCards] = useState([]);
-  const [cardList, setCardList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFirstLoading, setIFL] = useState(true);
-  const [score, setScore] = useState(0);
+function getRandomItems(array, amount) {
+  const result = [];
 
-  function handleCardClick(id) {
-    if (isLoading) return;
-    console.log(id);
-    // Checks if the card is already in selectedCards
-    const cObj = cardList.find((item) => item.id === id);
-    if (selectedCards.includes(cObj)) {
-      console.log("It was already selected");
-      return;
+  while (result.length < amount && result.length < array.length) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+
+    if (!result.includes(array[randomIndex])) {
+      result.push(array[randomIndex]);
     }
-    setScore(score + 1);
-    setSelectedCards((prev) => [...prev, cObj]);
   }
+
+  return result;
+}
+
+function App() {
+  const [cardList, setCardList] = useState([]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    function fetchCars() {
+      if (ignore) return;
+
+      const cards = fetchCards(42);
+      setCardList(cards);
+    }
+
+    fetchCars();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <div className="mainContainer">
@@ -30,27 +44,8 @@ function App() {
         Get points by clicking on an image but don't click on any more than
         once!
       </p>
-      <div>
-        <p>Current Score: {selectedCards.length}</p>
-        <p>High Score: 99</p>
-        {isLoading ? (
-          <div>
-            <p>Loading...</p>
-          </div>
-        ) : (
-          <div className="cardContainer">
-            {cardList.map((card) => (
-              <Card
-                key={card.id}
-                id={card.id}
-                text={card.text}
-                img={card.image}
-                click={handleCardClick}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <p>High Score: 99</p>
+      <Game playList={getRandomItems(cardList, 12)} cardAmount={4} />
     </div>
   );
 }
