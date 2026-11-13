@@ -8,19 +8,57 @@
 }
 
 .card {
-  aspect-ratio: 1.3/1;
+  aspect-ratio: 1.3 / 1;
   width: 100%;
   border: 1px solid black;
   border-radius: 10px;
+  background-color: gray;
+  transform-style: preserve-3d;
+  will-change: transform;
+  animation: flip 0.5s ease reverse forwards;
 }
 
-.card > div {
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  background: #333;
+}
+
+.card.hidden {
+  animation: flip 0.5s ease forwards;
+}
+
+@keyframes flip {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.cardFront > div {
   height: 66%;
   overflow: hidden;
   border-radius: inherit;
 }
 
-.card > div > img {
+.cardFront > div > img {
   object-fit: fill;
   width: 100%;
   border-radius: 10px;

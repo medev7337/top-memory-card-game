@@ -1,12 +1,18 @@
-function Card({ id, text, img, click }) {
-  return (
-    <div className="card" id={id} onClick={() => click(id)}>
-      <div>
-        <img src={img} />
+function Card({ id, text, img, click, hidden = false }) {
+  const fullCard = (
+    <div className={`card ${hidden ? "hidden" : ""}`}>
+      <div className="cardFront" id={id} onClick={() => click(id)}>
+        <div>
+          <img src={img} />
+        </div>
+        <p>{text}</p>
       </div>
-      <p>{text}</p>
+
+      <div className="cardBack">{/* Back design */}</div>
     </div>
   );
+
+  return fullCard;
 }
 
 export default Card;
