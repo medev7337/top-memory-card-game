@@ -71,7 +71,7 @@ function Game({
     if (gameState !== 0) return;
     if (clickedList.includes(id)) {
       // Uncomment or comment this line to add or remove lose state from the game
-      // setGameState(1);
+      setGameState(1);
       return;
     }
     setHidden(true);

@@ -15,7 +15,7 @@ function fetchCards(amount) {
     const o = {
       id: index,
       car: randomCar,
-      img: `/cars/${randomCar}.png`,
+      img: `${import.meta.env.BASE_URL}cars/${randomCar}.png`,
     };
 
     cl.push(o);
