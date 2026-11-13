@@ -8,7 +8,9 @@ function Card({ id, text, img, click, hidden = false }) {
         <p>{text}</p>
       </div>
 
-      <div className="cardBack">{/* Back design */}</div>
+      <div className="cardBack">
+        <img src="/carIcon.svg" alt="" />
+      </div>
     </div>
   );
 

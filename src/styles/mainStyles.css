@@ -1,5 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+  /* Primary */
+  --md-primary: #81d99b;
+  --md-on-primary: #00391b;
+  --md-primary-container: #00522a;
+  --md-on-primary-container: #9cf5b5;
+
+  /* Secondary */
+  --md-secondary: #b7ccba;
+  --md-on-secondary: #243529;
+  --md-secondary-container: #394e3e;
+  --md-on-secondary-container: #d3e8d7;
+
+  /* Tertiary */
+  --md-tertiary: #a1cfd3;
+  --md-on-tertiary: #00363a;
+  --md-tertiary-container: #204d52;
+  --md-on-tertiary-container: #bcebf0;
+
+  /* Background */
+  --md-background: #101a15;
+  --md-on-background: #dfe9df;
+
+  /* Surface */
+  --md-surface: #101a15;
+  --md-on-surface: #dfe9df;
+  --md-surface-dim: #101a15;
+  --md-surface-bright: #35443a;
+
+  /* Surface Containers */
+  --md-surface-container-lowest: #0b130e;
+  --md-surface-container-low: #18251d;
+  --md-surface-container: #1c2a21;
+  --md-surface-container-high: #26352b;
+  --md-surface-container-highest: #303f35;
+
+  /* Borders & Dividers */
+  --md-outline: #89988b;
+  --md-outline-variant: #404f43;
+
+  /* Semantic Colors */
+  --md-success: #81d99b;
+  --md-warning: #f4c66a;
+  --md-error: #ffb4ab;
+  --md-info: #9ccaff;
+
+  /* Interactive States */
+  --md-hover: #81d99b14;
+  --md-focus: #81d99b;
+  --md-selected: #00522a;
+  --md-pressed: #81d99b24;
+  --md-disabled: #dfe9df4d;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+html,
+body {
+  background-color: var(--md-background);
+}
+
+.mainContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-primary);
+}
+
+.mainContainer > h1 {
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  color: var(--md-secondary);
+}
+
+.menu > p {
+  font-size: 1.3rem;
+}
+
+.levelButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.levelButtons > button {
+  height: 100px;
+  width: 150px;
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 100ms ease;
+}
+
+.levelButtons > button:hover {
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
 }

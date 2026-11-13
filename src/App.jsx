@@ -19,6 +19,27 @@ function getRandomItems(array, amount) {
 
 function App() {
   const [cardList, setCardList] = useState([]);
+  const [highScore, setHighScore] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [cDiff, setCDiff] = useState();
+
+  const difficultySettings = [
+    {
+      mode: "easy",
+      cards: 12,
+      cardAmount: 4,
+    },
+    {
+      mode: "normal",
+      cards: 24,
+      cardAmount: 8,
+    },
+    {
+      mode: "hard",
+      cards: 36,
+      cardAmount: 12,
+    },
+  ];
 
   useEffect(() => {
     let ignore = false;
@@ -37,15 +58,36 @@ function App() {
     };
   }, []);
 
+  function startGame(diff) {
+    setGameStarted(true);
+    setCDiff(difficultySettings[diff]);
+  }
+
   return (
     <div className="mainContainer">
-      <h1>The Memory Card Game</h1>
-      <p>
-        Get points by clicking on an image but don't click on any more than
-        once!
-      </p>
-      <p>High Score: 99</p>
-      <Game playList={getRandomItems(cardList, 12)} cardAmount={4} />
+      <h1>The Memory Cars</h1>
+      {gameStarted ? (
+        <Game
+          playList={getRandomItems(cardList, cDiff.cards)}
+          cardAmount={cDiff.cardAmount}
+          setGameStarted={setGameStarted}
+          highScore={highScore}
+          setHighScore={setHighScore}
+        />
+      ) : (
+        <div className="menu">
+          <p>
+            Get points by clicking on an image but don't click on any, more than
+            once!
+          </p>
+          <p>Highest Score: {highScore}</p>
+          <div className="levelButtons">
+            <button onClick={() => startGame(0)}>Easy</button>
+            <button onClick={() => startGame(1)}>Normal</button>
+            <button onClick={() => startGame(2)}>Hard</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

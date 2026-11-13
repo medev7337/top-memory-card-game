@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
+import "../styles/modalStyles.css";
 
 // Easy - 4 cards shown, 12 cards total
 // Get first 4 after shuffling
@@ -16,19 +17,26 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-function Game({ playList, cardAmount }) {
+function Game({
+  playList,
+  cardAmount,
+  setGameStarted,
+  highScore,
+  setHighScore,
+}) {
   const [score, setScore] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [showingList, setShowingList] = useState([]);
   const [clickedList, setClickedList] = useState([]);
-  const [won, setWon] = useState(false);
+  const [gameState, setGameState] = useState(0);
   const [round, setRound] = useState(0);
 
   useEffect(() => {
     function updateShowingList() {
       if (playList.length === 0) return;
+      if (gameState !== 0) return;
       if (score === playList.length) {
-        setWon(true);
+        setGameState(2);
         return;
       }
 
@@ -48,20 +56,22 @@ function Game({ playList, cardAmount }) {
           .slice(0, cardAmount - 1),
       ];
 
-      setShowingList(nl);
+      setShowingList(shuffleArray(nl));
+      setHidden(false);
     }
 
     const timeout = setTimeout(() => {
-      setHidden(false);
       updateShowingList();
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [playList, cardAmount, clickedList, score]);
+  }, [playList, cardAmount, clickedList, score, gameState]);
 
   function handleClick(id) {
+    if (gameState !== 0) return;
     if (clickedList.includes(id)) {
-      console.log("Ooops");
+      // Uncomment or comment this line to add or remove lose state from the game
+      // setGameState(1);
       return;
     }
     setHidden(true);
@@ -86,10 +96,37 @@ function Game({ playList, cardAmount }) {
     </div>
   );
 
+  function backToMenu() {
+    if (score > highScore) {
+      setHighScore(score);
+    }
+    setGameStarted(false);
+  }
+
+  const loseModal = (
+    <div className="modalOverlay">
+      <div className="modal" id="loseModal">
+        <p>Ooops</p>
+        <button onClick={backToMenu}>Back to menu</button>
+      </div>
+    </div>
+  );
+
+  const wonModal = (
+    <div className="modalOverlay">
+      <div className="modal" id="wonModal">
+        <p>You Won</p>
+        <button onClick={backToMenu}>Back to menu</button>
+      </div>
+    </div>
+  );
+
   return (
-    <div>
+    <div className="gameHolder">
       <p>Current Score: {score}</p>
-      {won ? <div>Won</div> : cardSection}
+      {gameState === 2 && wonModal}
+      {gameState === 1 && loseModal}
+      {cardSection}
     </div>
   );
 }
